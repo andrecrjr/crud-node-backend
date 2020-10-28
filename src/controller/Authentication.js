@@ -4,7 +4,6 @@ class Authentication {
   constructor(username, password) {
     this.username = username;
     this.password = password;
-    this.loginType = loginType;
   }
 
   async userAuth() {
