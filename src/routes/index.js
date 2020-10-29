@@ -64,19 +64,13 @@ router.put("/user/edit/:username", async (req, res, next) => {
 
 router.post("/auth", async (req, res) => {
   try {
-    const user = new Authentication(
-      req.body.username,
-      req.body.password,
-      req.body.loginType
-    );
+    const user = new Authentication(req.body.username, req.body.password);
     const isAuth = await user.checkUserAndPassword();
-    console.log(isAuth);
     return isAuth.auth ? res.json(isAuth) : res.status(401).json(isAuth);
   } catch (e) {
-    console.log(e);
     return res.status(403).json({
       auth: false,
-      status: "Houve um problema na autenticação, tente novamente.",
+      status: e,
     });
   }
 });
