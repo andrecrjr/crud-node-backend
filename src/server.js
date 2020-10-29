@@ -5,12 +5,13 @@ const path = require("path");
 const server = require("http").Server(app);
 const routes = require("./routes");
 const cors = require("cors");
-const envFile = process.env.NODE_ENV
-  ? path.resolve(__dirname, "../.env.development")
-  : "../.env";
 
 let PORT = "8000";
-require("dotenv").config({ path: envFile });
+
+process.env.NODE_ENV === "dev" &&
+  require("dotenv").config({
+    path: path.resolve(__dirname, "../.env.development"),
+  });
 
 app.use(bodyParser.json());
 app.options("*", cors());
