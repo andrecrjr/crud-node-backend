@@ -1,5 +1,7 @@
 const express = require("express");
 const UserDAO = require("../controller/UserDAO");
+const Authentication = require("../controller/Authentication");
+const { UserAlreadyExists } = require("./helper");
 
 const router = express.Router();
 
@@ -15,17 +17,18 @@ router.post("/create_user", async (req, res, next) => {
       req.body.username,
       req.body.password,
       req.body.cpf,
-      req.body.email
+      req.body.email,
+      req.body.telephone,
+      req.body.isAdmin
     );
     const data = await user.registerUser();
     return res.json(data);
   } catch (error) {
     let getError = UserAlreadyExists(error);
-    res.status(401).json(getError);
+    return res.status(401).json(getError);
   }
 });
 
-//get all users
 router.get("/users", async (req, res, next) => {
   try {
     let data = await UserDAO.checkUsers();
@@ -35,22 +38,27 @@ router.get("/users", async (req, res, next) => {
   }
 });
 
-//find user
 router.get("/user/:username", async (req, res, next) => {
   try {
     let data = await UserDAO.findUser(req.params.username);
     return res.json(data);
   } catch (error) {
-    return res.json(error).status(404);
+    return res
+      .status(404)
+      .json({ error: true, info: "Não há usuario procurado, ou não existe" });
   }
 });
 
 router.put("/user/edit/:username", async (req, res, next) => {
   try {
     let data = await UserDAO.editUser(req.params.username, req.body);
-    return res.json(data);
+    if (!data["error"]) {
+      return res.json(data);
+    } else {
+      return res.status(403).json(data);
+    }
   } catch (e) {
-    return res.json(e).status(404);
+    return res.status(404).json({ error: true, info: "Usuário não existe!" });
   }
 });
 
@@ -62,11 +70,14 @@ router.post("/auth", async (req, res) => {
       req.body.loginType
     );
     const isAuth = await user.checkUserAndPassword();
-    return res.json(isAuth);
+    console.log(isAuth);
+    return isAuth.auth ? res.json(isAuth) : res.status(401).json(isAuth);
   } catch (e) {
-    return res
-      .status(401)
-      .json({ auth: false, status: "Problema na autenticação" });
+    console.log(e);
+    return res.status(403).json({
+      auth: false,
+      status: "Houve um problema na autenticação, tente novamente.",
+    });
   }
 });
 

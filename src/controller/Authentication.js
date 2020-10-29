@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const Bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 class Authentication {
   constructor(username, password) {
@@ -20,7 +22,10 @@ class Authentication {
       return this.getPassAndToken(password, _id);
     } catch (e) {
       console.log(e);
-      return { error: true, status: "Connectivity Problems with the API" };
+      return {
+        error: true,
+        info: "Problema de conectividade com a API, tente novamente.",
+      };
     }
   }
 
@@ -29,7 +34,12 @@ class Authentication {
       const token = jwt.sign({ id }, process.env.TOKEN_SECRET);
       return { auth: true, token };
     } else {
-      return { auth: false, token: null };
+      return {
+        auth: false,
+        token: null,
+        error: true,
+        info: "Password não está correto, tente novamente.",
+      };
     }
   }
 

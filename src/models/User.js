@@ -7,7 +7,9 @@ const userSchema = new mongoose.Schema({
   lastName: String,
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  cpf: { type: Number, required: true, unique: true },
+  cpf: { type: String, required: true, unique: true },
+  isAdmin: { type: Boolean, required: true },
+  telephone: { type: String, required: true },
 });
 
 userSchema.pre("save", function (next) {
