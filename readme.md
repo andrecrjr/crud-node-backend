@@ -12,7 +12,7 @@
 
 ---
 
-## `Passo 4 - Ao concluir, você ja poderá rodar o sistema utilizando: yarn start`
+## `Passo 4 - Ao concluir, você ja poderá rodar o sistema utilizando: yarn start ou npm start`
 
 ---
 
@@ -22,3 +22,5 @@ Servidor API Restful, CRUD com autenticação gerando jsonwebtoken feito em Node
 - Controller - Fica as classes de acesso ao Banco
 - Routes - As rotas da API restful
 - server.js - Inicio do servidor
+
+O mongoDB está hospedado no mongo atlas na .env com alguns dados já populados, incluindo a conta admin.
