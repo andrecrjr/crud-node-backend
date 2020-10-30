@@ -21,7 +21,6 @@ class Authentication {
       });
       return { ...this.getPassAndToken(password, _id), isAdmin };
     } catch (e) {
-      console.log(e);
       return {
         error: true,
         info: "Problema de conectividade com a API, tente novamente.",
