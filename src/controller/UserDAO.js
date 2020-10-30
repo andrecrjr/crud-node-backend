@@ -4,18 +4,8 @@ const User = require("../models/User");
 const { editPassword } = require("./helper");
 
 class UserDAO {
-  constructor(
-    firstName,
-    lastName,
-    username,
-    password,
-    cpf,
-    email,
-    telephone,
-    isAdmin
-  ) {
-    this.firstName = firstName;
-    this.lastName = lastName;
+  constructor(name, username, password, cpf, email, telephone, isAdmin) {
+    this.name = name;
     this.username = username;
     this.password = password;
     this.cpf = cpf;
@@ -28,18 +18,15 @@ class UserDAO {
     try {
       let data = new User({
         username: this.username,
-        firstName: this.firstName,
-        lastName: this.lastName,
+        name: this.name,
         password: this.password,
         cpf: this.cpf,
         email: this.email,
         telephone: this.telephone,
         isAdmin: this.isAdmin,
       });
-      console.log(data);
       return data.save();
     } catch (e) {
-      console.log(e);
       return false;
     }
   }
@@ -69,20 +56,21 @@ class UserDAO {
         { username: username },
         userChanges
       );
-
-      return { error: false, ...user.save() };
+      user;
+      return { error: false, info: `Editado com sucesso` };
     } catch (e) {
-      console.log(e);
+      e;
       return { error: true, info: "Problema com edição do usuário!" };
     }
   }
 
-  static async dropUser(username, userChanges) {
+  static async dropUser(username) {
     try {
       let user = await User.deleteOne({ username: username });
-      return user.save();
+      user.deletedCount;
+      return user.deletedCount > 0 && true;
     } catch (e) {
-      console.log(e);
+      e;
       return false;
     }
   }

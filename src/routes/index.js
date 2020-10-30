@@ -12,8 +12,7 @@ router.get("/", (req, res) => {
 router.post("/create_user", async (req, res, next) => {
   try {
     const user = new UserDAO(
-      req.body.firstName,
-      req.body.lastName,
+      req.body.name,
       req.body.username,
       req.body.password,
       req.body.cpf,
@@ -25,7 +24,7 @@ router.post("/create_user", async (req, res, next) => {
     return res.json(data);
   } catch (error) {
     let getError = UserAlreadyExists(error);
-    return res.status(401).json(getError);
+    return res.status(403).json(getError);
   }
 });
 
@@ -57,6 +56,16 @@ router.put("/user/edit/:username", async (req, res, next) => {
     } else {
       return res.status(403).json(data);
     }
+  } catch (e) {
+    e;
+    return res.status(404).json({ error: true, info: "Usuário não existe!" });
+  }
+});
+
+router.delete("/user/remove/:username", async (req, res, next) => {
+  try {
+    let data = await UserDAO.dropUser(req.params.username, req.body);
+    return res.status(data ? 200 : 404).json(data);
   } catch (e) {
     return res.status(404).json({ error: true, info: "Usuário não existe!" });
   }

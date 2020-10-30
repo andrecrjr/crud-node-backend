@@ -1,7 +1,8 @@
 const UserAlreadyExists = (error) => {
-  console.log(error);
+  error;
   if (error.code === 11000) {
     let problem = Object.keys(error.keyValue);
+
     return {
       info: `${problem} já existe, tente novamente.`,
       element: problem[0],
