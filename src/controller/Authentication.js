@@ -23,7 +23,7 @@ class Authentication {
     } catch (e) {
       return {
         error: true,
-        info: "Problema de conectividade com a API, tente novamente.",
+        info: "Usuário não encontrado!",
       };
     }
   }
