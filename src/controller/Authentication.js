@@ -16,10 +16,10 @@ class Authentication {
 
   async checkUserAndPassword() {
     try {
-      const { password, _id, isAdmin } = await User.findOne({
+      const { password, _id, isAdmin, username } = await User.findOne({
         username: this.username,
       });
-      return { ...this.getPassAndToken(password, _id), isAdmin };
+      return { ...this.getPassAndToken(password, _id), isAdmin, username };
     } catch (e) {
       return {
         error: true,
